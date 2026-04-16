@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CookieBanner from "@/components/CookieBanner";
 import MobileCallBar from "@/components/MobileCallBar";
 import { SERVICE_EMAIL, SERVICE_PHONE } from "@/lib/contact";
-
-const GOOGLE_ADS_ID = "AW-17863468955";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -96,48 +92,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 text-slate-900`}
       >
-        {/* Load Google Tag (Ads + GA4) */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
-          strategy="afterInteractive"
-        />
-
-        {/* Global gtag setup + Consent Mode */}
-        <Script
-          id="gtag-global"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              window.gtag = gtag;
-
-              gtag('js', new Date());
-
-              // Default consent (GDPR compliant)
-              gtag('consent','default',{
-                ad_storage:'denied',
-                
-              });
-
-              // Configure Google Ads
-              gtag('config','${GOOGLE_ADS_ID}');
-
-             
-
-              // Consent update function (used by CookieBanner)
-              window.updateConsent = function(granted){
-                if(!window.gtag) return;
-                window.gtag('consent','update',{
-                  ad_storage: granted ? 'granted' : 'denied',
-                });
-              };
-
-              
-            `,
-          }}
-        />
-
         <div className="flex min-h-screen flex-col">
           <Navbar />
 
@@ -158,7 +112,6 @@ export default function RootLayout({
         </div>
 
         <MobileCallBar />
-        <CookieBanner />
       </body>
     </html>
   );
